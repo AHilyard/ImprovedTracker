@@ -12,7 +12,6 @@ namespace ImprovedTracker
 	/// <summary>The mod entry point.</summary>
 	public class ModEntry : Mod
 	{
-		private const int COCONUT_TREE = 9;
 		private ImprovedTrackerConfig Config;
 
 		/*********
@@ -23,7 +22,7 @@ namespace ImprovedTracker
 		public override void Entry(IModHelper helper)
 		{
 			Config = Helper.ReadConfig<ImprovedTrackerConfig>();
-			helper.Events.Display.RenderedHud += this.OnRenderedHud;
+			helper.Events.Display.RenderedHud += OnRenderedHud;
 		}
 
 
@@ -35,9 +34,11 @@ namespace ImprovedTracker
 		/// <param name="args">The event data.</param>
 		private void OnRenderedHud(object sender, RenderedHudEventArgs args)
 		{
-			// ignore if player hasn't loaded a save yet
+			// Ignore if the player hasn't loaded a save yet.
 			if (!Context.IsWorldReady)
+			{
 				return;
+			}
 
 			// If the player doesn't have the tracker skill, bail.
 			if (!Game1.player.professions.Contains(Farmer.tracker))
@@ -57,8 +58,20 @@ namespace ImprovedTracker
 					{
 						if (obj.Value.IsSpawnedObject)
 						{
-							trackables.Add(new KeyValuePair<Vector2, Color>(obj.Key * 64f + new Vector2(32f, 32f), Color.Yellow));
+							trackables.Add(new KeyValuePair<Vector2, Color>(obj.Key * 64.0f + new Vector2(32.0f, 32.0f), Color.Yellow));
 						}
+					}
+				}
+			}
+
+			// Track seed spots...
+			if (Config.SeedSpots)
+			{
+				foreach (KeyValuePair<Vector2, StardewValley.Object> obj in Game1.currentLocation.objects.Pairs)
+				{
+					if (obj.Value.QualifiedItemId == "(O)SeedSpot")
+					{
+						trackables.Add(new KeyValuePair<Vector2, Color>(obj.Key * 64.0f + new Vector2(32.0f, 32.0f), Color.Yellow));
 					}
 				}
 			}
@@ -66,9 +79,9 @@ namespace ImprovedTracker
 			// Track "Fish splash point" in blue...
 			if (Config.FishingSpots)
 			{
-				if (Game1.currentLocation.fishSplashPoint.Value != null && !Game1.currentLocation.fishSplashPoint.Value.Equals(Point.Zero))
+				if (!Game1.currentLocation.fishSplashPoint.Value.Equals(Point.Zero))
 				{
-					trackables.Add(new KeyValuePair<Vector2, Color>(new Vector2(Game1.currentLocation.fishSplashPoint.X, Game1.currentLocation.fishSplashPoint.Y) * 64f + new Vector2(32f, 32f), Color.Cyan));
+					trackables.Add(new KeyValuePair<Vector2, Color>(new Vector2(Game1.currentLocation.fishSplashPoint.X, Game1.currentLocation.fishSplashPoint.Y) * 64.0f + new Vector2(32.0f, 32.0f), Color.Cyan));
 				}
 			}
 
@@ -81,10 +94,10 @@ namespace ImprovedTracker
 					{
 						case Bush bush:
 							// If this bush has something to shake off and it's not a tea bush nor a golden walnut bush...
-							if (bush.tileSheetOffset.Value == 1 && bush.size.Value != Bush.greenTeaBush && bush.size.Value != Bush.walnutBush)
+							if (bush.tileSheetOffset.Value == 1 && bush.inBloom() && bush.size.Value != Bush.greenTeaBush && bush.size.Value != Bush.walnutBush && !bush.townBush.Value)
 							{
 								// Add it for tracking.
-								trackables.Add(new KeyValuePair<Vector2, Color>(bush.tilePosition.Value * 64f + new Vector2(64f, 32f), Color.DarkViolet));
+								trackables.Add(new KeyValuePair<Vector2, Color>(bush.Tile * 64.0f + new Vector2(64.0f, 32.0f), Color.DarkViolet));
 							}
 							break;
 					}
@@ -103,7 +116,7 @@ namespace ImprovedTracker
 							if (tree.treeType.Value == Tree.palmTree2 && tree.hasSeed.Value && !tree.stump.Value && tree.growthStage.Value >= 5)
 							{
 								// Add it for tracking.
-								trackables.Add(new KeyValuePair<Vector2, Color>(new Vector2(tree.currentTileLocation.X, tree.currentTileLocation.Y) * 64f + new Vector2(32f, 32f), Color.DarkViolet));
+								trackables.Add(new KeyValuePair<Vector2, Color>(new Vector2(tree.Tile.X, tree.Tile.Y) * 64.0f + new Vector2(32.0f, 32.0f), Color.DarkViolet));
 							}
 							break;
 					}
@@ -115,58 +128,58 @@ namespace ImprovedTracker
 			{
 				if (!Utility.isOnScreen(obj.Key, 64))
 				{
-					Microsoft.Xna.Framework.Rectangle bounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
-					Vector2 onScreenPosition2 = default(Vector2);
-					float rotation2 = 0f;
-					if (obj.Key.X > (float)(Game1.viewport.MaxCorner.X - 64))
+					Rectangle bounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
+					Vector2 onScreenPosition2 = default;
+					float rotation2 = 0.0f;
+					if (obj.Key.X > (Game1.viewport.MaxCorner.X - 64))
 					{
 						onScreenPosition2.X = bounds.Right - 8;
-						rotation2 = (float)Math.PI / 2f;
+						rotation2 = MathF.PI / 2.0f;
 					}
-					else if (obj.Key.X < (float)Game1.viewport.X)
+					else if (obj.Key.X < Game1.viewport.X)
 					{
-						onScreenPosition2.X = 8f;
-						rotation2 = -(float)Math.PI / 2f;
+						onScreenPosition2.X = 8.0f;
+						rotation2 = -MathF.PI / 2.0f;
 					}
 					else
 					{
-						onScreenPosition2.X = obj.Key.X - (float)Game1.viewport.X;
+						onScreenPosition2.X = obj.Key.X - Game1.viewport.X;
 					}
-					if (obj.Key.Y > (float)(Game1.viewport.MaxCorner.Y - 64))
+					if (obj.Key.Y > (Game1.viewport.MaxCorner.Y - 64))
 					{
 						onScreenPosition2.Y = bounds.Bottom - 8;
-						rotation2 = (float)Math.PI;
+						rotation2 = MathF.PI;
 					}
-					else if (obj.Key.Y < (float)Game1.viewport.Y)
+					else if (obj.Key.Y < Game1.viewport.Y)
 					{
-						onScreenPosition2.Y = 8f;
+						onScreenPosition2.Y = 8.0f;
 					}
 					else
 					{
-						onScreenPosition2.Y = obj.Key.Y - (float)Game1.viewport.Y;
+						onScreenPosition2.Y = obj.Key.Y - Game1.viewport.Y;
 					}
-					if (onScreenPosition2.X == 8f && onScreenPosition2.Y == 8f)
+					if (onScreenPosition2.X == 8.0f && onScreenPosition2.Y == 8.0f)
 					{
-						rotation2 += (float)Math.PI / 4f;
+						rotation2 += MathF.PI / 4.0f;
 					}
-					if (onScreenPosition2.X == 8f && onScreenPosition2.Y == (float)(bounds.Bottom - 8))
+					if (onScreenPosition2.X == 8.0f && onScreenPosition2.Y == (bounds.Bottom - 8))
 					{
-						rotation2 += (float)Math.PI / 4f;
+						rotation2 += MathF.PI / 4.0f;
 					}
-					if (onScreenPosition2.X == (float)(bounds.Right - 8) && onScreenPosition2.Y == 8f)
+					if (onScreenPosition2.X == (bounds.Right - 8) && onScreenPosition2.Y == 8.0f)
 					{
-						rotation2 -= (float)Math.PI / 4f;
+						rotation2 -= MathF.PI / 4.0f;
 					}
-					if (onScreenPosition2.X == (float)(bounds.Right - 8) && onScreenPosition2.Y == (float)(bounds.Bottom - 8))
+					if (onScreenPosition2.X == (bounds.Right - 8) && onScreenPosition2.Y == (bounds.Bottom - 8))
 					{
-						rotation2 -= (float)Math.PI / 4f;
+						rotation2 -= MathF.PI / 4.0f;
 					}
 					
 					// Get the source rect of the arrow graphic.
-					Microsoft.Xna.Framework.Rectangle srcRect = new Microsoft.Xna.Framework.Rectangle(149, 458, 5, 4);
-					float renderScale = 4f;
-					Vector2 safePos = Utility.makeSafe(renderSize: new Vector2((float)srcRect.Width * renderScale, (float)srcRect.Height * renderScale), renderPos: onScreenPosition2);
-					args.SpriteBatch.Draw(Game1.mouseCursors, safePos, srcRect, obj.Value, rotation2, new Vector2(2f, 2f), renderScale, SpriteEffects.FlipVertically, 1f);
+					Rectangle srcRect = new Rectangle(149, 458, 5, 4);
+					float renderScale = 4.0f;
+					Vector2 safePos = Utility.makeSafe(renderSize: new Vector2(srcRect.Width * renderScale, srcRect.Height * renderScale), renderPos: onScreenPosition2);
+					args.SpriteBatch.Draw(Game1.mouseCursors, safePos, srcRect, obj.Value, rotation2, new Vector2(2.0f, 2.0f), renderScale, SpriteEffects.FlipVertically, 1.0f);
 				}
 			}
 		}

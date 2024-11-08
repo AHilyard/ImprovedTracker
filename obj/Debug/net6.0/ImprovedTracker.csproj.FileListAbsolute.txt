@@ -1,0 +1,8 @@
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\bin\Debug\net6.0\ImprovedTracker.deps.json
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\bin\Debug\net6.0\ImprovedTracker.dll
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\obj\Debug\net6.0\ImprovedTracker.csproj.AssemblyReference.cache
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\obj\Debug\net6.0\ImprovedTracker.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\obj\Debug\net6.0\ImprovedTracker.AssemblyInfoInputs.cache
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\obj\Debug\net6.0\ImprovedTracker.AssemblyInfo.cs
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\obj\Debug\net6.0\ImprovedTracker.csproj.CoreCompileInputs.cache
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\obj\Debug\net6.0\ImprovedTracker.dll

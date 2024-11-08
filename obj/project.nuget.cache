@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "tHP9zxXOYriVLisVL2CCSePPOYMBp9TF0u2Sa+VBm/lJmhD5UNb4Dz7c5sauOEGC8ca96rjaufGQfiofXkhpEw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Anthony\\Documents\\GitHub\\ImprovedTracker\\ImprovedTracker.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Anthony\\.nuget\\packages\\pathoschild.stardew.modbuildconfig\\4.3.1\\pathoschild.stardew.modbuildconfig.4.3.1.nupkg.sha512"
+  ],
+  "logs": []
+}

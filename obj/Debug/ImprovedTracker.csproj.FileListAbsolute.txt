@@ -1,0 +1,6 @@
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\bin\Debug\ImprovedTracker.dll
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\bin\Debug\ImprovedTracker.pdb
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\obj\Debug\ImprovedTracker.csproj.AssemblyReference.cache
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\obj\Debug\ImprovedTracker.csproj.CoreCompileInputs.cache
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\obj\Debug\ImprovedTracker.dll
+C:\Users\Anthony\Documents\GitHub\ImprovedTracker\obj\Debug\ImprovedTracker.pdb
